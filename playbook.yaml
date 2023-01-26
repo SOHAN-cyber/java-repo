@@ -10,7 +10,7 @@
       src: webapp/target/webapp.war
       dest: /opt/tomcat/apache-tomcat-10.0.27/webapps/
   - name: Renaming the file
-    command: mv /opt/tomcat/apache-tomcat-10.0.27/webapps/webapp.war ROOT.war
+    command: mv /opt/tomcat/apache-tomcat-10.0.27/webapps/webapp.war /opt/tomcat/apache-tomcat-10.0.27/webapps/ROOT.war
     ignore_errors: true
   - name: Remove image
     command: sudo systemctl restart tomcat
