@@ -1,0 +1,15 @@
+---
+- hosts: tomcat
+  become: true
+  tasks:
+  - name: Removing  the existing file
+    command: rm -rf /opt/tomcat/apache-tomcat-10.0.27/webapps/ROOT.war
+    ignore_errors: true
+  - name: Copy the file
+    copy:
+      src: webapp/target/webapp.war
+      dest: /opt/tomcat/apache-tomcat-10.0.27/webapps/
+    ignore_errors: true
+  - name: Remove image
+    command: sudo systemctl restart tomcat
+    ignore_errors: true
