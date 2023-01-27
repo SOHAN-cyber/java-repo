@@ -1,4 +1,5 @@
 FROM maven as builder
+WORKDIR /app
 COPY . /app
 RUN mvn clean package
 
