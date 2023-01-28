@@ -1,2 +1,2 @@
-<h1> Hello, Welcome to  Jenkins Basic CI !!   </h1>
+<h1> Hello, Welcome to  Kubernetes CI/CD pipeline !!   </h1>
 
