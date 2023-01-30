@@ -1,4 +1,4 @@
-FROM maven as builder
+FROM maven:3.8.7-openjdk-18 as builder
 WORKDIR /app
 COPY . /app
 RUN mvn clean package
