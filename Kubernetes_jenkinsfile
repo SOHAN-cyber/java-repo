@@ -9,10 +9,30 @@ pipeline {
                 git 'https://github.com/SOHAN-cyber/java-repo.git'
             }
         }
+        stage ('Cred Scanner') {
+            steps {
+                sh 'gitleaks detect --report-format json --report-path=./report.json'
+            }
+        }
+        stage ('License Finder') {
+            steps {
+                sh 'license_finder report --format=html > license.html'
+            }
+        }
+        stage ('Checking Dockerfile') {
+            steps {
+                sh 'hadolint Dockerfile'
+            }
+        }
         stage ('Creating a Docker Image') {
             steps{
                sh 'docker build -t dogra21703/tomcat_test:${BUILD_ID} .'
                sh 'docker image tag dogra21703/tomcat_test:${BUILD_ID} dogra21703/tomcat_test:latest'
+            }
+        }
+        stage ('Scan Docker image') {
+            steps {
+                sh 'trivy image --ignorefile .trivyignore  -f json -o trivy-report.json dogra21703/tomcat_test:${BUILD_ID}'
             }
         }
         stage('Push Image') {
@@ -32,9 +52,9 @@ pipeline {
             }
         }
     }
-    post {
-        always{
-            cleanWs()
-        }
-    }
+    // post {
+    //     always{
+    //         // cleanWs()
+    //     }
+    // }
 }
