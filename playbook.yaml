@@ -1,17 +1,16 @@
 ---
-- hosts: tomcat
+- hosts: 172.31.27.71
   become: true
   tasks:
   - name: Removing  the existing file
-    command: rm -rf /opt/tomcat/apache-tomcat-10.0.27/webapps/ROOT.war
+    file:
+      path: /opt/tomcat9/webapps/ROOT.war
+      state: absent
     ignore_errors: true
   - name: Copy the file
     copy:
-      src: webapp/target/webapp.war
-      dest: /opt/tomcat/apache-tomcat-10.0.27/webapps/
-  - name: Renaming the file
-    command: mv /opt/tomcat/apache-tomcat-10.0.27/webapps/webapp.war /opt/tomcat/apache-tomcat-10.0.27/webapps/ROOT.war
+      src: /var/lib/jenkins/workspace/Java/webapp/target/webapp.war
+      dest: /opt/tomcat9/webapps/ROOT.war
     ignore_errors: true
-  - name: Remove image
-    command: sudo systemctl restart tomcat
-    ignore_errors: true
+  - name: Restarting Tomcat
+    command: systemctl restart tomcat.service
