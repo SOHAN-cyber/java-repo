@@ -18,10 +18,9 @@ tools {
         stage('Push Docker Image') {
             steps {
                 withCredentials([usernamePassword(credentialsId: '10', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
-    // some block
-    sh 'docker login dogra21703 -p $PASSWORD'
-    sh 'docker push dogra21703/java_code:latest'
-    sh 'docker push dogra21703/java_code:${BUILD_NUMBER}'
+                    sh 'docker login -u dogra21703 -p $PASSWORD'
+                    sh 'docker push dogra21703/java_code:latest'
+                    sh 'docker push dogra21703/java_code:${BUILD_NUMBER}'
 }
             }
         }
