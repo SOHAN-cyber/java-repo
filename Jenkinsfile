@@ -1,37 +1,27 @@
 pipeline {
     agent any
-    tools {
-  maven 'Maven'
-}
+    tool {
+        maven 'MAVEN-3.9'
+    }
     stages {
-        stage ('Git Clone') {
+        stage('Clone') {
             steps {
                 git 'https://github.com/SOHAN-cyber/java-repo.git'
             }
         }
-        stage ('Creating a Docker Image') {
-            steps{
-               sh 'docker build -t dogra21703/tomcat_test:${BUILD_ID} .'
-               sh 'docker image tag dogra21703/tomcat_test:${BUILD_ID} dogra21703/tomcat_test:latest'
+        stage ('Build') {
+            steps {
+                sh 'mvn clean package'
             }
         }
-        stage('Push Image') {
+        stage ('Deploy to EC2') {
             steps {
-                withCredentials([string(credentialsId: '30', variable: 'password')]) {
-                 sh 'docker login -u dogra21703 -p $password'
-                 sh 'docker push dogra21703/tomcat_test:${BUILD_ID}'
-                 sh 'docker push dogra21703/tomcat_test:latest'
-                }
-            }
-        }
-        stage('Deploy') {
-            steps {
-             ansiblePlaybook become: true, inventory: '/etc/ansible/hosts', playbook: 'docker.yaml'   
+                sh 'ansible-playbook -i hosts ec2-deployment.yaml'
             }
         }
     }
     post {
-        always{
+        always {
             cleanWs()
         }
     }
