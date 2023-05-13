@@ -1,9 +1,9 @@
 pipeline {
     agent any
-    tools {
-        maven 'MAVEN-3.9'
-        dockerTool 'Docker'
-    }
+tools {
+  dockerTool 'Docker'
+  maven 'MAVEN-3.9'
+}
     stages {
         stage('Clone') {
             steps {
