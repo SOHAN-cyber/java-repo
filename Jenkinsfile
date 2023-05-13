@@ -26,7 +26,7 @@ tools {
         }
         stage ('Deploy to EC2') {
             steps {
-               sh 'echo done'
+               sh 'ansible-playbook -i hosts docker-deployment.yaml'
             }
         }
     }
