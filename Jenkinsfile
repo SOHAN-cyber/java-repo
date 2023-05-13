@@ -9,14 +9,25 @@ pipeline {
                 git 'https://github.com/SOHAN-cyber/java-repo.git'
             }
         }
-        stage ('Build') {
+        stage ('Building Docker Image') {
             steps {
-                sh 'mvn clean package'
+                sh 'docker build -t dogra21703/java_code:latest .'
+                sh 'docker image tag dogra21703/java_code:latest dogra21703/java_code:${BUILD_NUMBER}'
+            }
+        }
+        stage('Push Docker Image') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: '10', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+    // some block
+    sh 'docker login $USERNAME -p $PASSWORD'
+    sh 'docker push dogra21703/java_code:latest'
+    sh 'docker push dogra21703/java_code:${BUILD_NUMBER}'
+}
             }
         }
         stage ('Deploy to EC2') {
             steps {
-                sh 'ansible-playbook -i hosts ec2-deployment.yaml'
+               sh 'echo done'
             }
         }
     }
