@@ -19,7 +19,7 @@ tools {
             steps {
                 withCredentials([usernamePassword(credentialsId: '10', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
     // some block
-    sh 'docker login $USERNAME -p $PASSWORD'
+    sh 'docker login dogra21703 -p $PASSWORD'
     sh 'docker push dogra21703/java_code:latest'
     sh 'docker push dogra21703/java_code:${BUILD_NUMBER}'
 }
