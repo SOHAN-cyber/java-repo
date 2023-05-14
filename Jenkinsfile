@@ -26,7 +26,10 @@ tools {
         }
         stage ('Approval Stage') {
             input {
-                message 'Please Approve the pipeline'
+               message "Do you want to proceed for production deployment?"
+            }
+            steps {
+                sh 'echo done'
             }
         }
         stage ('Deploy to Kubernetes') {
