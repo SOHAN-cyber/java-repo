@@ -11,13 +11,24 @@ tools {
         }
         stage ('Building Docker Image') {
             steps {
-                sh 'mvn clean package'
+                sh 'docker build -t dogra21703/java_code:latest .'
+                sh 'docker image tag dogra21703/java_code:latest dogra21703/java_code:${BUILD_NUMBER}'
+            }
+        }
+        stage('Push Docker Image') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: '10', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+                    sh 'docker login -u $USERNAME -p $PASSWORD'
+                    sh 'docker push dogra21703/java_code:latest'
+                    sh 'docker push dogra21703/java_code:${BUILD_NUMBER}'
+}
             }
         }
         stage ('Deploy to Kubernetes') {
             steps {
-                sh 'echo ${BUILD_ID}'
-               sh 'kubectl apply -f deployment.yaml  -l BUILD_ID=${BUILD_ID} '
+            sh 'export BUILD_NUMBER=${BUILD_NUMBER}'
+            sh 'echo $BUILD_NUMBER'
+            sh  'envsubst < deployment.yaml  | kubectl apply -f -'
             }
         }
     }

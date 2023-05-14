@@ -5,7 +5,7 @@ metadata:
   labels:
     app: jenkins
 spec:
-  replicas: 1
+  replicas: 2
   minReadySeconds: 30
   selector:
     matchLabels:
@@ -18,11 +18,10 @@ spec:
     spec:
       containers:
       - name: tomcat-image
-        image: dogra21703/java_code:${BUILD_ID}
+        image: dogra21703/java_code:${BUILD_NUMBER}
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
-
 ---
 kind: Service
 apiVersion: v1
