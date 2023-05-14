@@ -24,6 +24,11 @@ tools {
 }
             }
         }
+        stage ('Approval Stage') {
+            input {
+                message 'Please Approve the pipeline'
+            }
+        }
         stage ('Deploy to Kubernetes') {
             steps {
             sh 'export BUILD_NUMBER=${BUILD_NUMBER}'
