@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: tomcat-image
-        image: dogra21703/tomcat_test:${BUILD_ID}
+        image: dogra21703/java_code:${BUILD_ID}
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
@@ -33,6 +33,6 @@ spec:
     app:  jenkins
   type:  LoadBalancer 
   ports:
-  - name:  react-port
+  - name:  tomcat-port
     port:  80
     targetPort:  8080
